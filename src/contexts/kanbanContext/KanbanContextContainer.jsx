@@ -10,7 +10,6 @@ const KanbanContextContainer = ({ children }) => {
     KanbanContextReducer,
     KanbanContextInitialState
   );
-  console.log(state, "state");
   return (
     <KanbanContext.Provider value={{ state, dispatch }}>
       {children}

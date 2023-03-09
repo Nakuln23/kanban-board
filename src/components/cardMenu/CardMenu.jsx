@@ -3,19 +3,25 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { IconButton } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { Box } from "@mui/system";
 
 const MENU_OPTIONS = [
   {
     label: "Edit",
+    icon: <EditIcon />,
   },
   {
     label: "Delete",
+    icon: <DeleteIcon />,
   },
 ];
 
 const CardMenu = ({ onMenuItemClick }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -29,7 +35,7 @@ const CardMenu = ({ onMenuItemClick }) => {
         <MoreVertIcon />
       </IconButton>
       <Menu
-        id="basic-menu"
+        id="menu"
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
@@ -38,7 +44,12 @@ const CardMenu = ({ onMenuItemClick }) => {
         }}
       >
         {MENU_OPTIONS?.map((option) => (
-          <MenuItem onClick={() => onMenuItemClick(option?.label)}>
+          <MenuItem
+            onClick={() => onMenuItemClick(option?.label)}
+            key={option?.label}
+          >
+            <Box sx={{ marginRight: 2, display: "flex" }}>{option.icon}</Box>
+
             {option?.label}
           </MenuItem>
         ))}

@@ -7,11 +7,12 @@ import { KanbanContext } from "../../contexts/kanbanContext/KanbanContextContain
 import { KanbanContextActions } from "../../contexts/kanbanContext/KanbanContextActions";
 import Modal from "../modal/Modal";
 
-export const CardItem = (props) => {
+// TODO : Add Proptypes
+export const CardItem = ({ cards, cardId, columnId, innerRef, provided }) => {
   const { dispatch } = useContext(KanbanContext);
   const [openModal, setOpenModal] = React.useState(false);
-  const title = props?.cards[props?.cardId]?.title;
-  const description = props?.cards[props?.cardId]?.description;
+  const title = cards[cardId]?.title;
+  const description = cards[cardId]?.description;
   const handleMenuItemClick = (label) => {
     if (label === "Edit") {
       setOpenModal(true);
@@ -19,17 +20,17 @@ export const CardItem = (props) => {
     if (label === "Delete") {
       dispatch({
         type: KanbanContextActions.DELETE_CARD,
-        cardId: props?.cardId,
-        columnId: props?.columnId,
+        cardId: cardId,
+        columnId: columnId,
       });
     }
   };
   return (
     <div
-      title={props?.cards[props?.cardId]?.title}
-      ref={props.innerRef}
-      {...props.provided.draggableProps}
-      {...props.provided.dragHandleProps}
+      title={cards[cardId]?.title}
+      ref={innerRef}
+      {...provided.draggableProps}
+      {...provided.dragHandleProps}
     >
       <MuiCard sx={{ minWidth: 255 }}>
         <CardHeader
@@ -51,7 +52,7 @@ export const CardItem = (props) => {
             dispatch({
               type: KanbanContextActions.EDIT_CARD_TITLE,
               textValue: e.target.value,
-              cardId: props?.cardId,
+              cardId: cardId,
             })
           }
           value={title}
@@ -64,11 +65,12 @@ export const CardItem = (props) => {
             dispatch({
               type: KanbanContextActions.EDIT_CARD_DESCRIPTION,
               textValue: e.target.value,
-              cardId: props?.cardId,
+              cardId: cardId,
             })
           }
           value={description}
           sx={{ marginTop: 4 }}
+          rows={4}
         />
       </Modal>
     </div>

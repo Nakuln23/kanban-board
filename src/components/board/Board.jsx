@@ -5,13 +5,12 @@ import { Card as MuiCard, CardContent, Button, Box } from "@mui/material";
 import { KanbanContext } from "../../contexts/kanbanContext/KanbanContextContainer";
 import { KanbanContextActions } from "../../contexts/kanbanContext/KanbanContextActions";
 
-const Board = (props) => {
+const Board = () => {
   const { state, dispatch } = useContext(KanbanContext);
 
-  const handleAddColumn = (event) => {
+  const handleAddColumn = () => {
     dispatch({
       type: KanbanContextActions.ADD_COLUMN,
-      event,
     });
   };
   const handleOnDragEnd = (event) => {
@@ -36,7 +35,6 @@ const Board = (props) => {
           <CardContent>
             <Button
               onClick={handleAddColumn}
-              id={props.id}
               sx={{ minWidth: 255 }}
               variant="outlined"
             >

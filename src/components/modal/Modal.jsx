@@ -1,6 +1,6 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import { Modal as MuiModal } from "@mui/material";
+import { Button, Modal as MuiModal } from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -23,7 +23,20 @@ export default function Modal({ open, onClose, children }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>{children}</Box>
+        <>
+          <Box sx={style}>
+            {children}
+            <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+              <Button
+                variant="outlined"
+                onClick={onClose}
+                sx={{ marginTop: 4 }}
+              >
+                Done
+              </Button>
+            </Box>
+          </Box>
+        </>
       </MuiModal>
     </div>
   );

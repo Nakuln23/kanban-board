@@ -17,20 +17,20 @@ import { KanbanContext } from "../../contexts/kanbanContext/KanbanContextContain
 import { KanbanContextActions } from "../../contexts/kanbanContext/KanbanContextActions";
 import Modal from "../modal/Modal";
 
-export const Column = (props) => {
+export const Column = ({ cards, id, cardIds, title }) => {
   const { dispatch } = useContext(KanbanContext);
   const [openModal, setOpenModal] = React.useState(false);
   const handleTextArea = (e) => {
     dispatch({
       type: KanbanContextActions.EDIT_COLUMN_TITLE,
       textValue: e.target.value,
-      columnId: props.id,
+      columnId: id,
     });
   };
-  const handleAddButton = (event) => {
+  const handleAddButton = () => {
     dispatch({
       type: KanbanContextActions.ADD_COLUMN_ITEM,
-      event,
+      columnId: id,
     });
   };
   const handleMenuItemClick = (label) => {
@@ -40,7 +40,7 @@ export const Column = (props) => {
     if (label === "Delete") {
       dispatch({
         type: KanbanContextActions.DELETE_COLUMN,
-        columnId: props?.id,
+        columnId: id,
       });
     }
   };
@@ -51,17 +51,27 @@ export const Column = (props) => {
         title={
           <Box sx={{ display: "flex" }}>
             <Typography variant="h5">
-              {props.title ? props.title : "Enter a title"}
+              {title ? title : "Enter a title"}
             </Typography>
           </Box>
         }
       />
       <CardContent>
-        <Droppable droppableId={props.id?.toString()}>
+        <Droppable droppableId={id}>
           {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               <List>
-                {props.cardIds.map((cardId, index) => (
+                <ListItem>
+                  <Button
+                    onClick={handleAddButton}
+                    id={id}
+                    sx={{ minWidth: 255 }}
+                    variant="outlined"
+                  >
+                    Add a item
+                  </Button>
+                </ListItem>
+                {cardIds.map((cardId, index) => (
                   <Draggable
                     key={cardId}
                     draggableId={`${cardId}`}
@@ -73,24 +83,14 @@ export const Column = (props) => {
                           provided={provided}
                           innerRef={provided.innerRef}
                           handleTextArea={handleTextArea}
-                          cards={props.cards}
+                          cards={cards}
                           cardId={cardId}
-                          columnId={props.id}
+                          columnId={id}
                         />
                       </ListItem>
                     )}
                   </Draggable>
                 ))}
-                <ListItem>
-                  <Button
-                    onClick={handleAddButton}
-                    id={props.id}
-                    sx={{ minWidth: 255 }}
-                    variant="outlined"
-                  >
-                    Add a item
-                  </Button>
-                </ListItem>
               </List>
               {provided.placeholder}
             </div>
@@ -103,7 +103,7 @@ export const Column = (props) => {
           variant="outlined"
           fullWidth
           onChange={handleTextArea}
-          value={props.title}
+          value={title}
         />
       </Modal>
     </MuiCard>

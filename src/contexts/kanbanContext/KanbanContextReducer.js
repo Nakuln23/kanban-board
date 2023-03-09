@@ -1,33 +1,9 @@
 import { KanbanContextActions } from "./KanbanContextActions";
+import { v4 as uuidv4 } from "uuid";
 
 export const KanbanContextInitialState = {
-  columns: [
-    { id: 1, title: "", cardIds: [1] },
-    {
-      id: 2,
-      title: "",
-      cardIds: [2],
-    },
-    {
-      id: 3,
-      title: "",
-      cardIds: [3],
-    },
-  ],
-  cards: {
-    1: {
-      title: "card 1",
-      description: "Your Text Here",
-    },
-    2: {
-      title: "card 2",
-      description: "Your Text Here",
-    },
-    3: {
-      title: "card 3",
-      description: "Your Text Here",
-    },
-  },
+  columns: [],
+  cards: {},
 };
 
 function KanbanContextReducer(state, action) {
@@ -37,16 +13,16 @@ function KanbanContextReducer(state, action) {
   switch (type) {
     case KanbanContextActions.ON_DRAG_END: {
       if (!event.destination) {
-        return;
+        return state;
       }
       const dropIndex = columns.findIndex(
-        (column) => column.id === parseInt(event.destination.droppableId)
+        (column) => column.id === event.destination.droppableId
       );
       const dropItems = Array.from(columns[dropIndex].cardIds);
       let _columns = [...columns];
       if (event.source.droppableId !== event.destination.droppableId) {
         const sourceIndex = columns.findIndex(
-          (column) => column.id === parseInt(event.source.droppableId)
+          (column) => column.id === event.source.droppableId
         );
         const sourceItems = Array.from(_columns[sourceIndex].cardIds);
         const [sourceSplice] = sourceItems.splice(event.source.index, 1);
@@ -62,7 +38,7 @@ function KanbanContextReducer(state, action) {
     }
     case KanbanContextActions.ADD_COLUMN: {
       const sampleColumn = {
-        id: columns.length + 1,
+        id: uuidv4(),
         title: "",
         cardIds: [],
       };
@@ -72,11 +48,15 @@ function KanbanContextReducer(state, action) {
       };
     }
     case KanbanContextActions.ADD_COLUMN_ITEM: {
+      const { columnId } = action;
       const _columns = [...columns];
-      const _currentHighestId = Object.keys(cards).length + 1;
+      const _id = uuidv4();
       const _cards = { ...cards };
-      _columns[event.target.id - 1].cardIds.push(_currentHighestId);
-      _cards[_currentHighestId] = {
+      const columnIndex = _columns.findIndex(
+        (column) => column.id === columnId
+      );
+      _columns[columnIndex].cardIds.push(_id);
+      _cards[_id] = {
         title: "",
         description: "",
       };
