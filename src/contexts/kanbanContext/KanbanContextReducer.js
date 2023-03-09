@@ -2,30 +2,30 @@ import { KanbanContextActions } from "./KanbanContextActions";
 
 export const KanbanContextInitialState = {
   columns: [
-    { id: 1, title: "Pending", cardIds: [1] },
+    { id: 1, title: "", cardIds: [1] },
     {
       id: 2,
-      title: "InProgess",
+      title: "",
       cardIds: [2],
     },
     {
       id: 3,
-      title: "Completed",
+      title: "",
       cardIds: [3],
     },
   ],
   cards: {
     1: {
       title: "card 1",
-      cardData: "Your Text Here",
+      description: "Your Text Here",
     },
     2: {
       title: "card 2",
-      cardData: "Your Text Here",
+      description: "Your Text Here",
     },
     3: {
       title: "card 3",
-      cardData: "Your Text Here",
+      description: "Your Text Here",
     },
   },
 };
@@ -63,7 +63,7 @@ function KanbanContextReducer(state, action) {
     case KanbanContextActions.ADD_COLUMN: {
       const sampleColumn = {
         id: columns.length + 1,
-        title: "Enter a title",
+        title: "",
         cardIds: [],
       };
       return {
@@ -77,13 +77,47 @@ function KanbanContextReducer(state, action) {
       const _cards = { ...cards };
       _columns[event.target.id - 1].cardIds.push(_currentHighestId);
       _cards[_currentHighestId] = {
-        title: "Enter a title",
-        cardData: "Enter a description Here",
+        title: "",
+        description: "",
       };
       return {
         ...state,
         cards: _cards,
         columns: _columns,
+      };
+    }
+    case KanbanContextActions.EDIT_COLUMN_TITLE: {
+      const { columnId, textValue } = action;
+      const _columns = columns.map((column) => {
+        if (column.id === columnId) {
+          return {
+            ...column,
+            title: textValue,
+          };
+        }
+        return column;
+      });
+      return {
+        ...state,
+        columns: _columns,
+      };
+    }
+    case KanbanContextActions.EDIT_CARD_TITLE: {
+      const { cardId, textValue } = action;
+      const _cards = { ...cards };
+      _cards[cardId].title = textValue;
+      return {
+        ...state,
+        cards: _cards,
+      };
+    }
+    case KanbanContextActions.EDIT_CARD_DESCRIPTION: {
+      const { cardId, textValue } = action;
+      const _cards = { ...cards };
+      _cards[cardId].description = textValue;
+      return {
+        ...state,
+        cards: _cards,
       };
     }
     case KanbanContextActions.DELETE_CARD: {

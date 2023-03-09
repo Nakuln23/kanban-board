@@ -1,12 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { IconButton } from "@mui/material";
-import { KanbanContext } from "../../contexts/kanbanContext/KanbanContextContainer";
-import { KanbanContextActions } from "../../contexts/kanbanContext/KanbanContextActions";
 
 const MENU_OPTIONS = [
+  {
+    label: "Edit",
+  },
   {
     label: "Delete",
   },
