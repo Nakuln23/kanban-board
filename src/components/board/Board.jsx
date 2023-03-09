@@ -31,12 +31,12 @@ const Board = () => {
             title={column.title}
           />
         ))}
-        <MuiCard sx={{ marginLeft: 8, backgroundColor: "#EBECF0" }}>
+        <MuiCard sx={{ marginLeft: 8, backgroundColor: "#ACADB1" }}>
           <CardContent>
             <Button
               onClick={handleAddColumn}
               sx={{ minWidth: 255 }}
-              variant="outlined"
+              variant="contained"
             >
               Add a column
             </Button>

@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useReducer, useMemo } from "react";
 import KanbanContextReducer, {
   KanbanContextInitialState,
 } from "./KanbanContextReducer";
@@ -10,8 +10,14 @@ const KanbanContextContainer = ({ children }) => {
     KanbanContextReducer,
     KanbanContextInitialState
   );
+  const kanbanContextValue = useMemo(() => {
+    return {
+      state,
+      dispatch,
+    };
+  }, [state]);
   return (
-    <KanbanContext.Provider value={{ state, dispatch }}>
+    <KanbanContext.Provider value={kanbanContextValue}>
       {children}
     </KanbanContext.Provider>
   );
